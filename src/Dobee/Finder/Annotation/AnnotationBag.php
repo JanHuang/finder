@@ -96,7 +96,7 @@ class AnnotationBag implements AnnotationBagInterface, AnnotationParserInterface
      */
     public function extractAnnotationVariables(\ReflectionClass $reflectionClass)
     {
-        $parser = function ($annotation, $mapped = array()) {
+        $parser = function ($annotation, $mapped = array()) use ($reflectionClass) {
 
             $variables = array();
 
@@ -105,8 +105,13 @@ class AnnotationBag implements AnnotationBagInterface, AnnotationParserInterface
             if (preg_match_all('/\@([A-Z]\w+)\((.*?)\)/', str_replace(array("\r\n", "\n", '*'), '', $annotation), $matches)) {
 
                 foreach ($matches[1] as $key => $value) {
-                    if (!isset($definedClass[$value]['annotation'])) {
-                        $definedClass[$value]['annotation'] = array();
+                    if (!isset($definedClass[$value])) {
+                        $definedClass[$value] = array(
+                            'annotation' => array(),
+                            'parameters' => array(),
+                            'namespace'  => $reflectionClass->getNamespaceName(),
+                            'class'      => $reflectionClass->getName(),
+                        );
                     }
 
                     $definedClass[$value]['annotation'][] = $matches[2][$key];
