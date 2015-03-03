@@ -66,9 +66,6 @@ class Annotation extends \SplFileObject
 
         if (null === $className && null === $this->className) {
             $className = pathinfo($this->getFilename(), PATHINFO_FILENAME);
-            if (!class_exists($className)) {
-                include $this->getPathname();
-            }
         }
 
         $this->namespace = $namespace;
