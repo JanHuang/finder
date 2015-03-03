@@ -114,7 +114,7 @@ class AnnotationBag implements AnnotationBagInterface, AnnotationParserInterface
 
                 foreach ($definedClass as $class => $annotation) {
 
-                    $annotation = explode(PHP_EOL, preg_replace('/\,\s*(\w+)/', PHP_EOL . '$1', implode(',', $annotation['annotation'])));
+                    $annotation = explode(PHP_EOL, preg_replace('/\,\s*(\w+)/', PHP_EOL . '$1', trim(implode(',', $annotation['annotation']))));
 
                     foreach ($annotation as $key => $val) {
                         $value = $val;
