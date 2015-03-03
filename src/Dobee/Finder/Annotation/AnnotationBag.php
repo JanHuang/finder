@@ -100,29 +100,41 @@ class AnnotationBag implements AnnotationBagInterface, AnnotationParserInterface
 
             $variables = array();
 
-            if (preg_match_all('/\@([A-Z]\w+)\((.*?)\)/', $annotation, $matches)) {
+            $definedClass = array();
+
+            if (preg_match_all('/\@([A-Z]\w+)\((.*?)\)/', str_replace(array("\r\n", "\n", '*'), '', $annotation), $matches)) {
+
                 foreach ($matches[1] as $key => $value) {
-                    if (!isset($variables[$value]['parameters'])) {
-                        $variables[$value]['parameters'] = array();
+                    if (!isset($definedClass[$value]['annotation'])) {
+                        $definedClass[$value]['annotation'] = array();
                     }
 
-                    if (!isset($variables[$value]['mapped'])) {
-                        $variables[$value]['mapped'] = $mapped;
+                    $definedClass[$value]['annotation'][] = $matches[2][$key];
+                }
+
+                foreach ($definedClass as $class => $annotation) {
+
+                    $annotation = explode(PHP_EOL, preg_replace('/\,\s*(\w+)/', PHP_EOL . '$1', implode(',', $annotation['annotation'])));
+
+                    foreach ($annotation as $key => $val) {
+                        $value = $val;
+                        if (false !== ($pos = strpos($val, '='))) {
+                            list($key, $value) = explode("=", $val);
+                        }
+                        $value = str_replace('\\', '\\\\', trim($value, '"'));
+                        $value = ($json = json_decode($value, true)) ? $json : $value;
+                        $variables[$key] = $value;
                     }
 
-                    if (false === ($pos = strpos($matches[2][$key], '='))) {
-                        $variables[$value]['parameters'][] = $matches[2][$key]; continue;
-                    }
-
-                    list($name, $val) = explode('=', $matches[2][$key]);
-                    $variables[$value]['parameters'][trim($name, '"')] = trim($val, '"');
+                    $definedClass[$class]['parameters'] = $variables;
+                    $variables = array();
                 }
             }
 
-            return $variables;
+            return $definedClass;
         };
 
-        $this->class = $parser($reflectionClass, array(
+        $this->class = $parser($reflectionClass->getDocComment(), array(
             'class'     => $reflectionClass->getName(),
             'method'    => null
         ));

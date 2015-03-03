@@ -97,7 +97,7 @@ class Annotation extends \SplFileObject
     /**
      * @return array
      */
-    public function getClass()
+    public function getClassAnnotation()
     {
         return $this->parametersBag->getClassNameVariables();
     }
@@ -106,7 +106,7 @@ class Annotation extends \SplFileObject
      * @param null|string $method
      * @return array
      */
-    public function getMethods($method = null)
+    public function getMethodsAnnotation($method = null)
     {
         return $this->parametersBag->getMethodsVariables($method);
     }

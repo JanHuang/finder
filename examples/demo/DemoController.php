@@ -3,14 +3,15 @@
 namespace Demo;
 
 /**
- * @Route("/")
- * @Demo()
+ * @Route("/", name="janhuang", defaults={"name":"janhuang"}, methods=["GET", "POST"])
+ * @Route(age="18")
+ * @Demo(name="jan")
  */
 class DemoController
 {
     /**
-     * @Route("name"="janhuang")
-     * @Route("age"="18")
+     * @Route(name=janhuang, defaults={"name":"janhuang"})
+     * @Route(age="18")
      */
     public function demoAction()
     {}

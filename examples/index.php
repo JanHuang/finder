@@ -19,8 +19,6 @@ $finder = new Finder();
 
 $files = $finder->name('%Controller%')->in(__DIR__ . '/demo')->files();
 
-print_r($finder);
-die;
 foreach ($files as $file) {
-    print_r($file->getAnnotation()->getMethods('demoAction'));
+    print_r($file->getAnnotation()->getClassAnnotation());
 }
