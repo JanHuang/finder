@@ -96,7 +96,7 @@ class AnnotationBag implements AnnotationBagInterface, AnnotationParserInterface
      */
     public function extractAnnotationVariables(\ReflectionClass $reflectionClass)
     {
-        $parser = function ($annotation, $mapped = array()) use ($reflectionClass) {
+        $parser = function ($annotation) use ($reflectionClass) {
 
             $variables = array();
 
@@ -109,8 +109,6 @@ class AnnotationBag implements AnnotationBagInterface, AnnotationParserInterface
                         $definedClass[$value] = array(
                             'annotation' => array(),
                             'parameters' => array(),
-                            'namespace'  => $reflectionClass->getNamespaceName(),
-                            'class'      => $reflectionClass->getName(),
                         );
                     }
 
@@ -139,18 +137,10 @@ class AnnotationBag implements AnnotationBagInterface, AnnotationParserInterface
             return $definedClass;
         };
 
-        $this->class = $parser($reflectionClass->getDocComment(), array(
-            'class'     => $reflectionClass->getName(),
-            'method'    => null
-        ));
+        $this->class = $parser($reflectionClass->getDocComment());
 
         foreach ($reflectionClass->getMethods() as $method) {
-            $this->methods[$method->getName()] = $parser($method->getDocComment(), array(
-                'class'             => $reflectionClass->getName(),
-                'method'            => $method->getName(),
-                'parameters'        => $method->getParameters(),
-                'parameters_num'    => $method->getNumberOfParameters(),
-            ));
+            $this->methods[$method->getName()] = $parser($method->getDocComment());
         }
 
         return $this;
