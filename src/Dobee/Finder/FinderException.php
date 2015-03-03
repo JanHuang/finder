@@ -13,6 +13,11 @@
 
 namespace Dobee\Finder;
 
+/**
+ * Class FinderException
+ *
+ * @package Dobee\Finder
+ */
 class FinderException extends \Exception
 {
 

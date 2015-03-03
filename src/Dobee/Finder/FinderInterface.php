@@ -13,21 +13,54 @@
 
 namespace Dobee\Finder;
 
+/**
+ * Interface FinderInterface
+ *
+ * @package Dobee\Finder
+ */
 interface FinderInterface
 {
+    /**
+     * @param $name
+     * @return $this
+     */
     public function setName($name);
 
+    /**
+     * @return string
+     */
     public function getName();
 
+    /**
+     * @param $type
+     * @return $this
+     */
     public function setType($type);
 
+    /**
+     * @return string
+     */
     public function getType();
 
+    /**
+     * @param $size
+     * @return $this
+     */
     public function setSize($size);
 
+    /**
+     * @return int
+     */
     public function getSize();
 
+    /**
+     * @param $dir
+     * @return $this
+     */
     public function setDir($dir);
 
+    /**
+     * @return string
+     */
     public function getDir();
 }

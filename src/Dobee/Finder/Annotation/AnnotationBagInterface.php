@@ -13,7 +13,36 @@
 
 namespace Dobee\Finder\Annotation;
 
+/**
+ * Interface AnnotationBagInterface
+ *
+ * @package Dobee\Finder\Annotation
+ */
 interface AnnotationBagInterface
 {
+    /**
+     * @return string
+     */
+    public function getNamespace();
 
+    /**
+     * @return string
+     */
+    public function getClassName();
+
+    /**
+     * @return string
+     */
+    public function getPath();
+
+    /**
+     * @return array
+     */
+    public function getClassNameVariables();
+
+    /**
+     * @param null|string $method
+     * @return array
+     */
+    public function getMethodsVariables($method = null);
 }

@@ -17,8 +17,10 @@ use Dobee\Finder\Finder;
 
 $finder = new Finder();
 
-$files = $finder->in(__DIR__ . '/demo')->files();
+$files = $finder->name('%Controller%')->in(__DIR__ . '/demo')->files();
 
+print_r($finder);
+die;
 foreach ($files as $file) {
     print_r($file->getAnnotation()->getMethods('demoAction'));
 }

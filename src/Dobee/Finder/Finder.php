@@ -31,7 +31,7 @@ class Finder implements \Iterator, \Countable
     /**
      * @var array
      */
-    private $grep = array();
+    private $filter = array();
 
     /**
      * The finder work directory path.
@@ -48,11 +48,36 @@ class Finder implements \Iterator, \Countable
     /**
      * Analog the UNIX grep filter.
      *
-     * @param $grep
+     * @param $name
      * @return $this
      */
-    public function grep($grep)
+    public function name($name)
     {
+        if (!empty($name)) {
+            $this->filter['name'] = function ($fileName) use ($name) {
+
+                $length = strlen(trim($name, '%'));
+
+                $first = substr($name, 0, 1);
+
+                $last = substr($name, -1);
+
+                if ('%' === $first && '%' !==  $last) {
+                    return trim($name, '%') === substr($fileName, 0, $length);
+                }
+
+                if ('%' === $last && '%' !== $first) {
+                    return trim($name, '%') === substr($fileName, -$length);
+                }
+
+                if ('%' === $first && '%' === $last) {
+                    return false !== strpos($fileName, trim($name, '%'));
+                }
+
+                return trim($name, '%') === $fileName;
+            };
+        }
+
         return $this;
     }
 
@@ -82,6 +107,11 @@ class Finder implements \Iterator, \Countable
 
         while (false !== ($entry = $handler->read())) {
             if (in_array($entry, array('.', '..'))) { continue; }
+
+            if (isset($this->filter['name']) && is_callable($this->filter['name'])) {
+                if (!$this->filter['name'](pathinfo($entry, PATHINFO_FILENAME))) { continue; }
+            }
+
             $finder = FinderResourceBuilder::createFinder($handler->path . DIRECTORY_SEPARATOR . $entry);
             $finder->setDir($handler->path)
                 ->setName($entry)
