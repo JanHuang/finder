@@ -96,7 +96,7 @@ class AnnotationBag implements AnnotationBagInterface, AnnotationParserInterface
      */
     public function extractAnnotationVariables(\ReflectionClass $reflectionClass)
     {
-        $parser = function ($annotation) use ($reflectionClass) {
+        $parser = function ($annotation, $mapped = array()) use ($reflectionClass) {
 
             $variables = array();
 
@@ -106,9 +106,19 @@ class AnnotationBag implements AnnotationBagInterface, AnnotationParserInterface
 
                 foreach ($matches[1] as $key => $value) {
                     if (!isset($definedClass[$value])) {
+                        if (isset($mapped['method']) && !empty($mapped['method'])) {
+                            $parameters = $reflectionClass->getMethod($mapped['method'])->getParameters();
+                            foreach ($parameters as $index => $param) {
+                                $name = is_object($param->getClass()) ? $param->getClass()->getName() : $param->getName();
+                                $parameters[$index] = $name;
+                            }
+                            $mapped['parameters'] = $parameters;
+                        }
+
                         $definedClass[$value] = array(
                             'annotation' => array(),
                             'parameters' => array(),
+                            'mapped'     => $mapped
                         );
                     }
 
@@ -137,10 +147,17 @@ class AnnotationBag implements AnnotationBagInterface, AnnotationParserInterface
             return $definedClass;
         };
 
-        $this->class = $parser($reflectionClass->getDocComment());
+        $this->class = $parser($reflectionClass->getDocComment(), array(
+            'class'     => $reflectionClass->getName(),
+            'method'    => '',
+        ));
 
         foreach ($reflectionClass->getMethods() as $method) {
-            $this->methods[$method->getName()] = $parser($method->getDocComment());
+            $this->methods[$method->getName()] = $parser($method->getDocComment(), array(
+                'class' => $reflectionClass->getName(),
+                'method'=> $method->getName(),
+                'parameters' => array(),
+            ));
         }
 
         return $this;
