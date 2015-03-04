@@ -109,7 +109,11 @@ class AnnotationBag implements AnnotationBagInterface, AnnotationParserInterface
                         if (isset($mapped['method']) && !empty($mapped['method'])) {
                             $parameters = $reflectionClass->getMethod($mapped['method'])->getParameters();
                             foreach ($parameters as $index => $param) {
-                                $name = is_object($param->getClass()) ? $param->getClass()->getName() : $param->getName();
+                                $name = is_object($param->getClass()) ?
+                                    function () use ($param) {
+                                        return $param->getClass()->getName();
+                                    }
+                                    : $param->getName();
                                 $parameters[$index] = $name;
                             }
                             $mapped['parameters'] = $parameters;
