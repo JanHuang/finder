@@ -58,7 +58,7 @@ class Annotation extends \SplFileObject
             $namespace = "";
             while (!$this->eof()) {
                 if (false !== ($pos = strpos(($line = $this->fgets()), 'namespace')) && substr($line, 0, 1) !== '#' && substr($line, 0, 2) !== '//') {
-                    $namespace = substr($line, 10, (strpos($line, ';')));
+                    $namespace = substr($line, 10, (strpos($line, ';')) - 10);
                     break;
                 }
             }
