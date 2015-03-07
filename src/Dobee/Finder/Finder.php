@@ -33,6 +33,9 @@ class Finder implements \Iterator, \Countable
      */
     private $filter = array();
 
+    /**
+     * @var string
+     */
     private static $dir;
 
     /**
@@ -41,11 +44,6 @@ class Finder implements \Iterator, \Countable
      * @var string
      */
     private $pwd = "./";
-
-    public function __construct()
-    {
-        $this->collections = new FinderCollections();
-    }
 
     /**
      * Analog the UNIX grep filter.
@@ -105,6 +103,8 @@ class Finder implements \Iterator, \Countable
      */
     public function scanDirectory($directory)
     {
+        $this->collections = new FinderCollections();
+
         $handler = dir($directory);
 
         while (false !== ($entry = $handler->read())) {
