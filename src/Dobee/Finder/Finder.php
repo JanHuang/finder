@@ -33,6 +33,8 @@ class Finder implements \Iterator, \Countable
      */
     private $filter = array();
 
+    private static $dir;
+
     /**
      * The finder work directory path.
      *
@@ -131,7 +133,7 @@ class Finder implements \Iterator, \Countable
      */
     public function all()
     {
-        if (0 === $this->count()) {
+        if (self::$dir !== $this->pwd) {
             $this->scanDirectory($this->pwd);
         }
 
