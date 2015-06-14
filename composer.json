@@ -1,17 +1,18 @@
 {
     "name": "dobee/finder",
     "description": "dobee finder component",
+    "type": "library",
+    "keywords": ["finder", "dobee"],
     "license": "MIT",
     "authors": [
         {
             "name": "janhuang",
-            "email": "384099566@qq.com"
+            "email": "bboyjanhuang@gmail.com"
         }
     ],
     "minimum-stability": "dev",
     "require": {
-        "php": ">=5.3.7",
-        "phpunit/phpunit": "4.5.*"
+        "php": ">=5.3.7"
     },
     "autoload": {
         "psr-4": {
