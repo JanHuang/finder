@@ -18,7 +18,7 @@ namespace FastD\Finder;
  *
  * @package FastD\Finder
  */
-class Finder extends \FilesystemIterator
+class Finder
 {
     /**
      * @var array
