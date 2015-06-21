@@ -21,7 +21,7 @@ use FastD\Finder\Directory\Directory;
  *
  * @package FastD\Finder
  */
-class FinderCollections extends \RecursiveDirectoryIterator
+class FinderCollections implements \Iterator, \Countable
 {
     /**
      * @var array
