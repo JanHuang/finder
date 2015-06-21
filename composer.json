@@ -1,8 +1,8 @@
 {
-    "name": "dobee/finder",
-    "description": "dobee finder component",
+    "name": "fastd/finder",
+    "description": "FastD finder component",
     "type": "library",
-    "keywords": ["finder", "dobee"],
+    "keywords": ["Finder", "FastD"],
     "license": "MIT",
     "authors": [
         {
@@ -12,11 +12,11 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "php": ">=5.3.7"
+        "php": ">=5.4"
     },
     "autoload": {
         "psr-4": {
-            "Dobee\\": "src/Dobee"
+            "FastD\\": "src/FastD"
         }
     }
 }

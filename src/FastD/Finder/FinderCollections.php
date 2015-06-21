@@ -11,17 +11,17 @@
  * Gmail: bboyjanhuang@gmail.com
  */
 
-namespace Dobee\Finder;
+namespace FastD\Finder;
 
-use Dobee\Finder\File\File;
-use Dobee\Finder\Directory\Directory;
+use FastD\Finder\File\File;
+use FastD\Finder\Directory\Directory;
 
 /**
  * Class FinderCollections
  *
- * @package Dobee\Finder
+ * @package FastD\Finder
  */
-class FinderCollections implements \Iterator, \Countable
+class FinderCollections extends \RecursiveDirectoryIterator
 {
     /**
      * @var array

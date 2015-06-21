@@ -2,8 +2,8 @@
 /**
  * Created by PhpStorm.
  * User: janhuang
- * Date: 15/2/17
- * Time: 下午9:01
+ * Date: 15/3/3
+ * Time: 上午10:33
  * Github: https://www.github.com/janhuang 
  * Coding: https://www.coding.net/janhuang
  * SegmentFault: http://segmentfault.com/u/janhuang
@@ -11,16 +11,9 @@
  * Gmail: bboyjanhuang@gmail.com
  */
 
-namespace Dobee\Finder\File;
+namespace FastD\Finder\Directory;
 
-use Dobee\Finder\FinderInterface;
-
-/**
- * Interface FileInterface
- *
- * @package Dobee\Finder\File
- */
-interface FileInterface extends FinderInterface
+class DirectoryNotExistsException extends \Exception
 {
 
 }

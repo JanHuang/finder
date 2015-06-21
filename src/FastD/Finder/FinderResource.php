@@ -11,12 +11,12 @@
  * Gmail: bboyjanhuang@gmail.com
  */
 
-namespace Dobee\Finder;
+namespace FastD\Finder;
 
 /**
  * Class FinderResource
  *
- * @package Dobee\Finder
+ * @package FastD\Finder
  */
 class FinderResource implements FinderInterface
 {

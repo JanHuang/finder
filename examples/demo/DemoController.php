@@ -2,7 +2,7 @@
 
 namespace Demo;
 
-use Dobee\Finder\Annotation\Annotation;
+use FastD\Finder\Annotation\Annotation;
 
 /**
  * @Route("/", name="janhuang", defaults={"name":"janhuang"}, methods=["GET", "POST"])

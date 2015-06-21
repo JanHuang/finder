@@ -11,12 +11,12 @@
  * Gmail: bboyjanhuang@gmail.com
  */
 
-namespace Dobee\Finder;
+namespace FastD\Finder;
 
 /**
  * Class FinderBuilder
  *
- * @package Dobee\Finder
+ * @package FastD\Finder
  */
 class FinderResourceBuilder
 {
@@ -24,8 +24,8 @@ class FinderResourceBuilder
      * @var array
      */
     private static $types = array(
-        'file'  => 'Dobee\\Finder\\File\\File',
-        'dir'   => 'Dobee\\Finder\\Directory\\Directory',
+        'file'  => 'FastD\\Finder\\File\\File',
+        'dir'   => 'FastD\\Finder\\Directory\\Directory',
     );
 
     /**

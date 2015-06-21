@@ -2,8 +2,8 @@
 /**
  * Created by PhpStorm.
  * User: janhuang
- * Date: 15/2/17
- * Time: 下午9:01
+ * Date: 15/3/3
+ * Time: 上午11:36
  * Github: https://www.github.com/janhuang 
  * Coding: https://www.coding.net/janhuang
  * SegmentFault: http://segmentfault.com/u/janhuang
@@ -11,16 +11,14 @@
  * Gmail: bboyjanhuang@gmail.com
  */
 
-namespace Dobee\Finder\Directory;
-
-use Dobee\Finder\FinderResource;
+namespace FastD\Finder;
 
 /**
- * Class Directory
+ * Class FinderException
  *
- * @package Dobee\Finder\Directory
+ * @package FastD\Finder
  */
-class Directory extends FinderResource implements DirectoryInterface
+class FinderException extends \Exception
 {
 
 }

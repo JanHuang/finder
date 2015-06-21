@@ -11,12 +11,12 @@
  * Gmail: bboyjanhuang@gmail.com
  */
 
-namespace Dobee\Finder\Annotation;
+namespace FastD\Finder\Annotation;
 
 /**
  * Class AnnotationBag
  *
- * @package Dobee\Finder\Annotation
+ * @package FastD\Finder\Annotation
  */
 class AnnotationBag implements AnnotationBagInterface, AnnotationParserInterface
 {

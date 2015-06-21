@@ -13,7 +13,7 @@
 echo '<pre>';
 $loader = include __DIR__ . '/../vendor/autoload.php';
 
-use Dobee\Finder\Finder;
+use FastD\Finder\Finder;
 
 $finder = new Finder();
 
