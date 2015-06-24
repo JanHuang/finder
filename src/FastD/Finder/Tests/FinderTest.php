@@ -2,8 +2,8 @@
 /**
  * Created by PhpStorm.
  * User: janhuang
- * Date: 15/6/15
- * Time: 上午10:59
+ * Date: 15/6/24
+ * Time: 下午10:08
  * Github: https://www.github.com/janhuang
  * Coding: https://www.coding.net/janhuang
  * SegmentFault: http://segmentfault.com/u/janhuang
@@ -14,14 +14,14 @@
 
 namespace FastD\Finder\Tests;
 
-use FastD\Finder\File\File;
+use FastD\Finder\Finder;
 
-class FileTest extends \PHPUnit_Framework_TestCase
+class FinderTest extends \PHPUnit_Framework_TestCase
 {
-    public function testFileCount()
+    public function testFinder()
     {
-        $file = new File(__DIR__ . '/Directory/demo.log');
+        $finder = new Finder();
 
-        $this->assertEquals(__DIR__ . '/Directory', $file->getPath());
+        $files = $finder->in(__DIR__)->files();
     }
 }

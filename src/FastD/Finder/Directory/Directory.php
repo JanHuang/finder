@@ -13,14 +13,58 @@
 
 namespace FastD\Finder\Directory;
 
-use FastD\Finder\FinderResource;
+/**
+ * Class Directory
+ *
+ * @package FastD\Finder\Directory
+ */
+use FastD\Finder\File\File;
 
 /**
  * Class Directory
  *
  * @package FastD\Finder\Directory
  */
-class Directory extends FinderResource implements DirectoryInterface
+class Directory extends \RecursiveDirectoryIterator
 {
+    protected $files;
 
+    protected $directories;
+
+    protected function filterFilesType()
+    {
+        foreach ($this as $file) {
+            if (in_array($file->getFilename(), ['.', '..'])) {
+                continue;
+            }
+            if ($this->isDir()) {
+                $this->directories[] = $file;
+            }
+
+            if ($file->isFile()) {
+                $this->files[] = $file;
+            }
+        }
+    }
+
+    /**
+     * @return File[]
+     */
+    public function files()
+    {
+        if (null === $this->files) {
+            $this->filterFilesType();
+        }
+
+        return $this->files;
+    }
+
+    public function directories()
+    {
+        if (null === $this->directories) {
+            $this->filterFilesType();
+        }
+
+        return $this->directories;
+    }
 }

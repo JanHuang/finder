@@ -21,214 +21,100 @@ use FastD\Finder\Directory\Directory;
  *
  * @package FastD\Finder
  */
-class Finder implements \Iterator, \Countable
+class Finder
 {
     /**
-     * @var FinderCollections
+     * @var Directory
      */
-    private $collections;
+    protected $workSpace;
 
-    /**
-     * @var array
-     */
-    private $filter = array();
+    protected $filter;
 
-    /**
-     * @var string
-     */
-    private static $dir;
-
-    /**
-     * The finder work directory path.
-     *
-     * @var string
-     */
-    private $pwd = "./";
-
-    /**
-     * Analog the UNIX grep filter.
-     *
-     * @param $name
-     * @return $this
-     */
-    public function name($name)
+    public function touch($name)
     {
-        if (!empty($name)) {
-            $this->filter['name'] = function ($fileName) use ($name) {
+        touch($name);
+    }
 
-                $length = strlen(trim($name, '%'));
+    public function unlink($name)
+    {}
 
-                $first = substr($name, 0, 1);
+    public function mkdir($dir, $mode = 0755, $recursion = true)
+    {
 
-                $last = substr($name, -1);
+    }
 
-                if ('%' === $first && '%' !==  $last) {
-                    return trim($name, '%') === substr($fileName, 0, $length);
-                }
+    public function rmdir($dir, $recursion = true)
+    {
+    }
 
-                if ('%' === $last && '%' !== $first) {
-                    return trim($name, '%') === substr($fileName, -$length);
-                }
+    public function rename($old_name, $new_name)
+    {
 
-                if ('%' === $first && '%' === $last) {
-                    return false !== strpos($fileName, trim($name, '%'));
-                }
+    }
 
-                return trim($name, '%') === $fileName;
-            };
+    public function move($name, $to)
+    {}
+
+    public function copy($name, $to)
+    {
+
+    }
+
+    public function in($dir)
+    {
+        if (!is_dir($dir)) {
+            throw new FinderException(sprintf('%s is cannot a directory.'));
         }
+
+        if ($this->workSpace) {
+            $dir = $this->workSpace->getRealPath() . DIRECTORY_SEPARATOR . $dir;
+        }
+
+        $this->workSpace = new Directory($dir);
 
         return $this;
     }
 
     /**
-     * @param $directory
-     * @return $this
-     * @throws FinderException
-     */
-    public function in($directory)
-    {
-        if (!is_dir($directory)) {
-            throw new FinderException(sprintf('Not a directory: %s', $directory));
-        }
-
-        $this->pwd = realpath($directory);
-
-        return $this;
-    }
-
-    /**
-     * @param string $directory
-     * @return FinderCollections
-     */
-    public function scanDirectory($directory)
-    {
-        $this->collections = new FinderCollections();
-
-        $handler = dir($directory);
-
-        while (false !== ($entry = $handler->read())) {
-            if (in_array($entry, array('.', '..'))) { continue; }
-
-            if (isset($this->filter['name']) && is_callable($this->filter['name'])) {
-                if (!$this->filter['name'](pathinfo($entry, PATHINFO_FILENAME))) { continue; }
-            }
-
-            $finder = FinderResourceBuilder::createFinder($handler->path . DIRECTORY_SEPARATOR . $entry);
-            $finder->setDir($handler->path)
-                ->setName($entry)
-                ->setSize(filesize($handler->path . DIRECTORY_SEPARATOR . $entry))
-                ->setType(filetype($handler->path . DIRECTORY_SEPARATOR . $entry))
-            ;
-            $this->collections->setFile($finder);
-        }
-
-        $handler->close();
-
-        return $this->collections;
-    }
-
-    /**
-     * @return FinderCollections
-     */
-    public function all()
-    {
-        if (self::$dir !== $this->pwd) {
-            $this->scanDirectory($this->pwd);
-        }
-
-        return $this->collections;
-    }
-
-    /**
-     * @return array|File[]
+     * @return File[]
      */
     public function files()
     {
-        return $this->all()->files();
+        if (null !== $this->filter && is_callable($this->filter)) {
+            $filter = $this->filter;
+            return $filter($this->workSpace->files());
+        }
+
+        return $this->workSpace->files();
     }
 
-    /**
-     * @return array|Directory[]
-     */
     public function directories()
     {
-        return $this->all()->directories();
+        return $this->workSpace->directories();
     }
 
-    /**
-     * (PHP 5 &gt;= 5.0.0)<br/>
-     * Return the current element
-     *
-     * @link http://php.net/manual/en/iterator.current.php
-     * @return FinderInterface Can return any type.
-     */
-    public function current()
+    public function date(\DateTime $dateTime)
     {
-        return $this->collections->current();
+        $this->filter = function (array $files) use ($dateTime) {
+            foreach ($files as $file) {
+
+            }
+        };
+
+        return $this;
     }
 
-    /**
-     * (PHP 5 &gt;= 5.0.0)<br/>
-     * Move forward to next element
-     *
-     * @link http://php.net/manual/en/iterator.next.php
-     * @return void Any returned value is ignored.
-     */
-    public function next()
+    public function name($name)
     {
-        $this->collections->next();
+        $this->filter = function (array $files) use ($name) {};
+
+        return $this;
     }
 
-    /**
-     * (PHP 5 &gt;= 5.0.0)<br/>
-     * Return the key of the current element
-     *
-     * @link http://php.net/manual/en/iterator.key.php
-     * @return string|int scalar on success, or null on failure.
-     */
-    public function key()
+    public function size($size)
     {
-        return $this->collections->key();
-    }
+        $this->filter = function (array $files) use ($size) {};
 
-    /**
-     * (PHP 5 &gt;= 5.0.0)<br/>
-     * Checks if current position is valid
-     *
-     * @link http://php.net/manual/en/iterator.valid.php
-     * @return boolean The return value will be casted to boolean and then evaluated.
-     *       Returns true on success or false on failure.
-     */
-    public function valid()
-    {
-        return $this->collections->valid();
-    }
-
-    /**
-     * (PHP 5 &gt;= 5.0.0)<br/>
-     * Rewind the Iterator to the first element
-     *
-     * @link http://php.net/manual/en/iterator.rewind.php
-     * @return void Any returned value is ignored.
-     */
-    public function rewind()
-    {
-        $this->collections->rewind();
-    }
-
-    /**
-     * (PHP 5 &gt;= 5.1.0)<br/>
-     * Count elements of an object
-     *
-     * @link http://php.net/manual/en/countable.count.php
-     * @return int The custom count as an integer.
-     *       </p>
-     *       <p>
-     *       The return value is cast to an integer.
-     */
-    public function count()
-    {
-        return $this->collections->count();
+        return $this;
     }
 }

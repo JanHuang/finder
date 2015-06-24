@@ -13,31 +13,7 @@
 
 namespace FastD\Finder\File;
 
-use FastD\Finder\Annotation\Annotation;
-use FastD\Finder\FinderResource;
-
-class File extends FinderResource implements FileInterface
+class File extends \SplFileInfo
 {
-    /**
-     * @var Annotation
-     */
-    private $annotation;
 
-    /**
-     * @param string $namespace
-     * @param string $className
-     * @return Annotation
-     */
-    public function getAnnotation($namespace = null, $className = null)
-    {
-        if (null === $this->annotation) {
-            $this->annotation = new Annotation(
-                $this->getDir() . DIRECTORY_SEPARATOR . $this->getName(),
-                $namespace,
-                $className
-            );
-        }
-
-        return $this->annotation;
-    }
 }

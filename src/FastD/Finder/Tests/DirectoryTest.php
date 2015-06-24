@@ -2,8 +2,8 @@
 /**
  * Created by PhpStorm.
  * User: janhuang
- * Date: 15/6/15
- * Time: 上午10:32
+ * Date: 15/6/24
+ * Time: 下午9:47
  * Github: https://www.github.com/janhuang
  * Coding: https://www.coding.net/janhuang
  * SegmentFault: http://segmentfault.com/u/janhuang
@@ -12,37 +12,14 @@
  * WebSite: http://www.janhuang.me
  */
 
-
 namespace FastD\Finder\Tests;
 
-use FastD\Finder\Finder;
+use FastD\Finder\Directory\Directory;
 
-/**
- * Class DirectoryTest
- *
- * @package FastD\Finder\Tests
- */
 class DirectoryTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @var Finder
-     */
-    private $finder;
-
-    public function setUp()
+    public function testLs()
     {
-        $this->finder = new Finder(__DIR__);
-    }
-
-    public function testDirectoryFilesCount()
-    {
-        foreach ($this->finder as $file) {
-            print_r($file);
-        }
-    }
-
-    public function testDirectoryRoot()
-    {
-
+        $directory = new Directory(__DIR__ . '/Directory');
     }
 }
