@@ -18,10 +18,16 @@ use FastD\Finder\Finder;
 
 class FinderTest extends \PHPUnit_Framework_TestCase
 {
-    public function testFinder()
+    public function testFinderFiles()
     {
         $finder = new Finder();
 
-        $files = $finder->in(__DIR__)->files();
+        $files = $finder->in(__DIR__)->name('File')->files();
+
+        $this->assertEquals('FileTest.php', $files[0]->getFilename());
+
+        $files = $finder->in(__DIR__ . '/..')->name('Finder')->files();
+
+        print_r($files);
     }
 }

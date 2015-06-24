@@ -28,6 +28,18 @@ class Finder
      */
     protected $workSpace;
 
+    const LT = '<';
+
+    const GT = '>';
+
+    const ET = '=';
+
+    const EGT = '>=';
+
+    const ELT = '<=';
+
+    const NET = '!=';
+
     protected $filter;
 
     public function touch($name)
@@ -90,15 +102,54 @@ class Finder
 
     public function directories()
     {
+        if (null !== $this->filter && is_callable($this->filter)) {
+            $filter = $this->filter;
+            return $filter($this->workSpace->directories());
+        }
+
         return $this->workSpace->directories();
     }
 
-    public function date(\DateTime $dateTime)
+    public function date(\DateTime $dateTime, $compare = Finder::EGT)
     {
-        $this->filter = function (array $files) use ($dateTime) {
+        $this->filter = function (array $files) use ($dateTime, $compare) {
+            $afterFiles = [];
             foreach ($files as $file) {
-
+                switch ($compare) {
+                    case Finder::GT:
+                        if ($this->getMTime() < $dateTime->getTimestamp()) {
+                            continue;
+                        }
+                        break;
+                    case Finder::ET:
+                        if ($this->getMTime() != $dateTime->getTimestamp()) {
+                            continue;
+                        }
+                        break;
+                    case Finder::LT:
+                        if ($this->getMTime() > $dateTime->getTimestamp()) {
+                            continue;
+                        }
+                        break;
+                    case Finder::ELT:
+                        if ($this->getMTime() >= $dateTime->getTimestamp()) {
+                            continue;
+                        }
+                        break;
+                    case Finder::NET:
+                        if ($this->getMTime() == $dateTime->getTimestamp()) {
+                            continue;
+                        }
+                        break;
+                    case Finder::EGT:
+                    default:
+                        if ($this->getMTime() <= $dateTime->getTimestamp()) {
+                            continue;
+                        }
+                }
+                $afterFiles[] = $file;
             }
+            return $afterFiles;
         };
 
         return $this;
@@ -106,14 +157,60 @@ class Finder
 
     public function name($name)
     {
-        $this->filter = function (array $files) use ($name) {};
+        $this->filter = function (array $files) use ($name) {
+            $afterFiles = [];
+            foreach ($files as $file) {
+                if (false !== strpos($file->getFilename(), $name)) {
+                    $afterFiles[] = $file;
+                }
+            }
+            return $afterFiles;
+        };
 
         return $this;
     }
 
-    public function size($size)
+    public function size($size, $compare = Finder::EGT)
     {
-        $this->filter = function (array $files) use ($size) {};
+        $this->filter = function (array $files) use ($size, $compare) {
+            $afterFiles = [];
+            foreach ($files as $file) {
+                switch ($compare) {
+                    case Finder::GT:
+                        if ($this->getSize() < $size) {
+                            continue;
+                        }
+                        break;
+                    case Finder::ET:
+                        if ($this->getSize() != $size) {
+                            continue;
+                        }
+                        break;
+                    case Finder::LT:
+                        if ($this->getSize() > $size) {
+                            continue;
+                        }
+                        break;
+                    case Finder::ELT:
+                        if ($this->getSize() >= $size) {
+                            continue;
+                        }
+                        break;
+                    case Finder::NET:
+                        if ($this->getSize() == $size) {
+                            continue;
+                        }
+                        break;
+                    case Finder::EGT:
+                    default:
+                    if ($this->getSize() <= $size) {
+                        continue;
+                    }
+                }
+                $afterFiles[] = $file;
+            }
+            return $afterFiles;
+        };
 
         return $this;
     }
