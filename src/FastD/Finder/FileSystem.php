@@ -2,8 +2,8 @@
 /**
  * Created by PhpStorm.
  * User: janhuang
- * Date: 15/6/24
- * Time: 下午9:47
+ * Date: 15/9/10
+ * Time: 下午2:46
  * Github: https://www.github.com/janhuang
  * Coding: https://www.coding.net/janhuang
  * SegmentFault: http://segmentfault.com/u/janhuang
@@ -12,14 +12,16 @@
  * WebSite: http://www.janhuang.me
  */
 
-namespace FastD\Finder\Tests;
+namespace FastD\Finder;
 
-use FastD\Finder\Directory\Directory;
-
-class DirectoryTest extends \PHPUnit_Framework_TestCase
+/**
+ * Class FileSystem
+ *
+ * Original symfony.
+ *
+ * @package FastD\Finder
+ */
+class FileSystem extends \Symfony\Component\Filesystem\Filesystem
 {
-    public function testLs()
-    {
-        $directory = new Directory(__DIR__ . '/Directory');
-    }
+
 }

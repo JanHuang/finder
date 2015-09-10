@@ -16,9 +16,3 @@ $loader = include __DIR__ . '/../vendor/autoload.php';
 use FastD\Finder\Finder;
 
 $finder = new Finder();
-
-$files = $finder->name('%Controller%')->in(__DIR__ . '/demo')->files();
-
-foreach ($files as $file) {
-    print_r($file->getAnnotation()->getMethodsAnnotation());
-}
