@@ -20,5 +20,10 @@
         "psr-4": {
             "FastD\\": "src/FastD"
         }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.0.x-dev"
+        }
     }
 }
